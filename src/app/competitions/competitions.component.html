@@ -3,8 +3,7 @@
     <div class="card card-block">
       <h4 class="card-title">{{competition.name}}</h4>
       <p class="card-text">{{competition.description}}</p>
-      <a href="#" class="card-link">Card link</a>
-      <a href="#" class="card-link">Another link</a>
+      <a [routerLink]="['/competition-editor', competition._id]" class="card-link">Card link</a>
     </div>
   </div>
 </div>

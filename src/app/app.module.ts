@@ -6,7 +6,8 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { CompetitionsComponent } from './competitions/competitions.component';
-import { CompetitionsService } from './competitions/competitions.service'
+import { CompetitionsService } from './services/competitions.service';
+import { CompetitionEditorComponent } from './competition-editor/competition-editor.component'
 
 // Define the routes
 const ROUTES = [
@@ -18,14 +19,18 @@ const ROUTES = [
   {
     path: 'competitions',
     component: CompetitionsComponent
+  },
+  {
+    path: 'competition-editor/:id',
+    component: CompetitionEditorComponent
   }
 ];
-
 
 @NgModule({
   declarations: [
     AppComponent,
-    CompetitionsComponent
+    CompetitionsComponent,
+    CompetitionEditorComponent
   ],
   imports: [
     BrowserModule,
