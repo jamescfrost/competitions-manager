@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-var competition = require('../api/competitions')
+var competition = require('../api/competitions');
 
-router.get('/', (req,res) => {
+router.get('/', (req, res) => {
   res.send('api works');
 });
 

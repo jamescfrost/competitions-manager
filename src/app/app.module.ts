@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { CompetitionsComponent } from './competitions/competitions.component';
-import { CompetitionsService } from './competitions.service'
+import { CompetitionsService } from './competitions/competitions.service'
 
 // Define the routes
 const ROUTES = [

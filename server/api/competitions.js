@@ -1,4 +1,4 @@
-var settings = require('../../settings.json')
+var settings = require('../../settings.json');
 var mongojs = require('mongojs');
 
 var db = mongojs(settings.mongoDbConnectionString, ['competitions']);
@@ -10,7 +10,7 @@ exports.getAll = function (req, res) {
     }
     res.json(competitions);
   })
-}
+};
 
 exports.get = function (req, res) {
   db.competitions.findOne({_id:mongojs.ObjectId(req.params.id)}, function (err, competition) {
@@ -19,7 +19,7 @@ exports.get = function (req, res) {
     }
     res.json(competition);
   })
-}
+};
 
 exports.add = function (req, res) {
   var competition = req.body;
@@ -36,7 +36,7 @@ exports.add = function (req, res) {
       res.json(competition);
     })
   }
-}
+};
 
 exports.delete = function (req, res) {
   db.competitions.remove({_id:mongojs.ObjectId(req.params.id)}, function (err, competition) {
@@ -45,7 +45,7 @@ exports.delete = function (req, res) {
     }
     res.json(competition);
   })
-}
+};
 
 exports.update = function (req, res) {
   var competition = req.body;
@@ -70,4 +70,4 @@ exports.update = function (req, res) {
       res.json(competition);
     })
   }
-}
+};
