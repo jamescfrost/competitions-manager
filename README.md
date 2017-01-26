@@ -3,7 +3,9 @@
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.26.
 
 ## Development server
-Run `npm run build` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files.
+Ensure angular-cli is installed `npm install -g angular-cli`
+Run `npm install`
+Run `npm run build` for a dev server. Navigate to `http://localhost:3000/`.
 
 ## Code scaffolding
 
