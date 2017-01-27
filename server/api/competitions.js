@@ -27,7 +27,7 @@ exports.add = function (req, res) {
     res.status(400);
     res.json({
       "error": "Bad data"
-    })
+    });
   } else {
     db.competitions.save(competition, function (err, competition) {
       if (err) {

@@ -3,8 +3,7 @@ import { CompetitionsService } from '../services/competitions.service'
 
 @Component({
   selector: 'app-competitions',
-  templateUrl: './competitions.component.html',
-  styleUrls: ['./competitions.component.css']
+  templateUrl: './competitions.component.html'
 })
 export class CompetitionsComponent implements OnInit {
 
