@@ -4,5 +4,6 @@ body {
   padding-bottom: 20px;
 }
 header {
+  overflow: hidden;
   margin-bottom: 20px;
 }
