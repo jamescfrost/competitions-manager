@@ -5,10 +5,10 @@
     <div class="col-lg-6">
       <nav class="float-lg-right">
         <ul class="nav nav-pills">
-          <li role="presentation" class="nav-item"><a [routerLink]="['/home']" [routerLinkActive]="['active']" class="nav-link">Home</a></li>
-          <li role="presentation" class="nav-item"><a [routerLink]="['/login']" [routerLinkActive]="['active']" class="nav-link">Login</a></li>
-          <li role="presentation" class="nav-item"><a [routerLink]="['/register']" [routerLinkActive]="['active']" class="nav-link">Register</a></li>
-          <li role="presentation" class="nav-item"><a [routerLink]="['/logout']" [routerLinkActive]="['active']" class="nav-link">Logout</a></li>
+          <li *ngIf="authService.isAuthenticated()" role="presentation" class="nav-item"><a [routerLink]="['/home']" [routerLinkActive]="['active']" class="nav-link">Home</a></li>
+          <li *ngIf="!authService.isAuthenticated()" role="presentation" class="nav-item"><a [routerLink]="['/login']" [routerLinkActive]="['active']" class="nav-link">Login</a></li>
+          <li *ngIf="!authService.isAuthenticated()" role="presentation" class="nav-item"><a [routerLink]="['/register']" [routerLinkActive]="['active']" class="nav-link">Register</a></li>
+          <li *ngIf="authService.isAuthenticated()" role="presentation" class="nav-item"><a [routerLink]="['/logout']" [routerLinkActive]="['active']" class="nav-link">Logout</a></li>
         </ul>
       </nav>
     </div>
