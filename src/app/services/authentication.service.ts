@@ -21,6 +21,14 @@ export class AuthenticationService {
   }
   */
 
+  isAuthenticated(): boolean {
+    if (localStorage.getItem('currentUser')) {
+      // logged in so return true
+      return true;
+    }
+    return false;
+  }
+
   login(username: string, password: string): Observable<boolean> {
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
