@@ -2,39 +2,41 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { DefaultComponent } from './default/default.component';
-import { CompetitionsComponent } from './competitions/competitions.component';
-import { CompetitionsService } from './services/competitions.service';
-import { CompetitionEditorComponent } from './competition-editor/competition-editor.component';
-import { HomeComponent } from './home/home.component';
+import { DashboardComponent } from './home/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { RegisterComponent } from './register/register.component'
 import { UserService } from  './services/user.service'
 import { AuthGuard } from './guards/auth.guard'
+import { NotFoundComponent } from './not-found/not-found.component'
+import { CompetitionsComponent } from './competitions/competitions.component'
+import { CompetitionComponent} from './competitions/competition.component'
+import { CompetitionsService} from './services/competitions.service'
 
-import { routes } from './app.routes';
+
+import {AppRoutingModule} from './app-routing.module';
 import {AuthenticationService} from "./services/authentication.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     DefaultComponent,
-    CompetitionsComponent,
-    CompetitionEditorComponent,
-    HomeComponent,
+    DashboardComponent,
     LoginComponent,
     LogoutComponent,
-    RegisterComponent
+    RegisterComponent,
+    NotFoundComponent,
+    CompetitionsComponent,
+    CompetitionComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(routes)
+    AppRoutingModule
   ],
   providers: [
     AuthGuard,
@@ -45,3 +47,4 @@ import {AuthenticationService} from "./services/authentication.service";
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

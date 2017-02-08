@@ -5,10 +5,10 @@ import { UserService } from '../services/user.service';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'home.component.html'
+  templateUrl: 'dashboard.component.html'
 })
 
-export class HomeComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   users: User[] = [];
 
   constructor(private userService: UserService) { }

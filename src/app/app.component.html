@@ -1,25 +1,30 @@
-
 <div class="container">
   <header>
     <h3 class="col-lg-6 text-muted">Competition Manager</h3>
     <div class="col-lg-6">
       <nav class="float-lg-right">
         <ul class="nav nav-pills">
-          <li *ngIf="authService.isAuthenticated()" role="presentation" class="nav-item"><a [routerLink]="['/home']" [routerLinkActive]="['active']" class="nav-link">Home</a></li>
-          <li *ngIf="!authService.isAuthenticated()" role="presentation" class="nav-item"><a [routerLink]="['/login']" [routerLinkActive]="['active']" class="nav-link">Login</a></li>
-          <li *ngIf="!authService.isAuthenticated()" role="presentation" class="nav-item"><a [routerLink]="['/register']" [routerLinkActive]="['active']" class="nav-link">Register</a></li>
-          <li *ngIf="authService.isAuthenticated()" role="presentation" class="nav-item"><a [routerLink]="['/logout']" [routerLinkActive]="['active']" class="nav-link">Logout</a></li>
+          <li *ngIf="!authService.isAuthenticated()" role="presentation" class="nav-item"><a [routerLink]="['/login']"
+                                                                                             [routerLinkActive]="['active']"
+                                                                                             class="nav-link">Login</a>
+          </li>
+          <li *ngIf="!authService.isAuthenticated()" role="presentation" class="nav-item"><a
+            [routerLink]="['/register']" [routerLinkActive]="['active']" class="nav-link">Register</a></li>
+          <li *ngIf="authService.isAuthenticated()" role="presentation" class="nav-item"><a
+            [routerLink]="['/dashboard']" [routerLinkActive]="['active']" class="nav-link">Dashboard</a></li>
+          <li *ngIf="authService.isAuthenticated()" role="presentation" class="nav-item"><a
+            [routerLink]="['/competitions']" [routerLinkActive]="['active']" class="nav-link">Competitions</a></li>
+          <li *ngIf="authService.isAuthenticated()" role="presentation" class="nav-item"><a [routerLink]="['/logout']"
+                                                                                            [routerLinkActive]="['active']"
+                                                                                            class="nav-link">Logout</a>
+          </li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <div class="jumbotron">
-    <div class="container">
-      <div class="col-sm-8 col-sm-offset-2">
-        <router-outlet></router-outlet>
-      </div>
-    </div>
+  <div class="content">
+    <router-outlet></router-outlet>
   </div>
 
   <footer class="footer">

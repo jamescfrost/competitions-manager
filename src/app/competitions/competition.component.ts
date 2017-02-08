@@ -7,9 +7,9 @@ import { CompetitionsService } from '../services/competitions.service';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'competition-editor.component.html',
+  templateUrl: 'competition.component.html',
 })
-export class CompetitionEditorComponent {
+export class CompetitionComponent {
   //competition: Competition;
 
   constructor(
