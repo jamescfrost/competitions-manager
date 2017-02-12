@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CompetitionsService } from '../services/competitions.service'
+import { Competition } from '../models/competition'
 
 @Component({
   selector: 'app-competitions',
@@ -7,7 +8,7 @@ import { CompetitionsService } from '../services/competitions.service'
 })
 export class CompetitionsComponent implements OnInit {
 
-  competitions: any[];
+  competitions: Competition[];
 
   constructor(private competitionsService: CompetitionsService) { }
 

@@ -9,18 +9,16 @@ router.get('/', function(req, res) {
 });
 
 router.post('/register', authentication.register);
-
 router.post('/authenticate', authentication.authenticate);
 
-
 router.get('/competitions', passport.authenticate('bearer', { session: false }), competition.getAll);
-/*
 router.get('/competition/:id', passport.authenticate('bearer', { session: false }), competition.get);
+router.put('/competition/:id', passport.authenticate('bearer', { session: false }), competition.save);
+
+/*
 router.post('/competition', passport.authenticate('bearer', { session: false }), competition.add);
 router.delete('/competition/:id', passport.authenticate('bearer', { session: false }), competition.delete);
 router.put('/competition/:id', passport.authenticate('bearer', { session: false }), competition.update);
 */
-
-
 
 module.exports = router;

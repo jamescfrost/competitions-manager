@@ -37,6 +37,7 @@ const appRoutes: Routes = [
   {
     path: 'competition/:id',
     component: CompetitionComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: '',

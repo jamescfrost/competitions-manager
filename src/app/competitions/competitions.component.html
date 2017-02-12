@@ -1,7 +1,6 @@
 <div class="row" *ngFor="let competition of competitions">
     <div class="card card-block">
-      <h4 class="card-title">{{competition.name}}</h4>
+      <h4 class="card-title"><a [routerLink]="['/competition', competition._id]">{{competition.name}}</a></h4>
       <p class="card-text">{{competition.description}}</p>
-      <a [routerLink]="['/competition', competition._id]" class="card-link">Edit</a>
     </div>
 </div>

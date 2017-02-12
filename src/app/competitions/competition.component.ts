@@ -3,36 +3,41 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Location }               from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 import { CompetitionsService } from '../services/competitions.service';
-//import { Competition } from '../competition';
+import { Competition } from '../models/competition';
 
 @Component({
   moduleId: module.id,
   templateUrl: 'competition.component.html',
 })
-export class CompetitionComponent {
-  //competition: Competition;
+export class CompetitionComponent implements OnInit {
 
-  constructor(
-    private competitionsService: CompetitionsService,
-    private route: ActivatedRoute,
-    private location: Location
-  ) {}
+  competition: Competition;
+
+  types = ["League", "Knockout", "League and Knockout"];
+
+  constructor(private competitionsService: CompetitionsService, private route: ActivatedRoute, private location: Location) {}
 
   ngOnInit(): void {
-/*    this.route.params
-      .switchMap((params: Params) => this.competitionService.getCompetition(params['id']))
+    this.route.params
+      .switchMap((params: Params) => this.competitionsService.getCompetition(params['id']))
       .subscribe(competition => {
-        console.log(competition);
-        this.competition = competition
-      });*/
+        this.competition = competition;
+      });
   }
 
-  /*
-   addCompetition(event: Event) {
+  saveCompetition(event: Event) {
+    event.preventDefault();
+    this.competitionsService.saveCompetition(this.competition)
+      .subscribe(competition => {
+        this.competition = competition;
+      })
+  }
+
+  /*  addCompetition(event: Event) {
    event.preventDefault();
    var newCompetition = new Competition();
    newCompetition.name = this.name;
-   this.competitionService.addCompetition(newCompetition)
+   this.competitionsService.addCompetition(newCompetition)
    .subscribe(competition => {
    this.competitions.push(competition);
    this.name = '';
@@ -51,6 +56,6 @@ export class CompetitionComponent {
    }
    }
    })
-   }
-   */
+   }*/
+
 }

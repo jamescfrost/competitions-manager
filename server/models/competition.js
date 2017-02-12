@@ -10,6 +10,10 @@ var CompetitionSchema = new Schema({
   description: {
     type: String,
   },
+  type: {
+    type: String,
+    required: true
+  },
   userId: {
     type: String,
     required: true

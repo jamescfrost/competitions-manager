@@ -9,15 +9,35 @@ exports.getAll = function (req, res) {
   });
 };
 
+exports.get = function (req, res) {
+  var id = req.params.id;
+  Competition.findOne({ _id : id }, function (err, competition) {
+    if(err) {
+      res.send(err);
+    }
+    res.json(competition);
+  })
+};
+
+exports.save = function (req, res) {
+  var saveCompetition = req.body;
+  Competition.findOne({ _id : saveCompetition._id }, function (err, competition) {
+    if(err) {
+      res.send(err);
+    }
+    competition.name = saveCompetition.name;
+    competition.description = saveCompetition.description;
+    competition.type = saveCompetition.type;
+    competition.save(function(err) {
+      if (err) {
+        res.send(err);
+      }
+    });
+    res.json(competition);
+  })
+};
+
 /*
- exports.get = function (req, res) {
- db.competitions.findOne({_id:mongojs.ObjectId(req.params.id)}, function (err, competition) {
- if(err) {
- res.send(err);
- }
- res.json(competition);
- })
- };
 
  exports.add = function (req, res) {
  var competition = req.body;
