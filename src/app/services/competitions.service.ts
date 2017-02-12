@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { AuthHttp } from 'angular2-jwt';
 import 'rxjs/add/operator/map';
-
 
 @Injectable()
 export class CompetitionsService {
 
-  constructor(private http: Http) { }
+  constructor(private authHttp: AuthHttp) {}
 
-  // Get all competitions from the API
   getAllCompetitions() {
-    return this.http.get('/api/competitions')
+    return this.authHttp.get('/api/competitions')
       .map(res => res.json());
   }
 

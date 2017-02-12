@@ -1,8 +1,19 @@
 // Get dependencies
 const express = require('express');
+const bodyParser = require('body-parser');
 const path = require('path');
 const http = require('http');
-const bodyParser = require('body-parser');
+const morgan  = require('morgan');
+const mongoose = require('mongoose');
+const passport = require('passport');
+const config = require('./server/config/database.json');
+const bearerStrategy = require('./server/api/authentication').bearerStrategy;
+
+// connect to database
+mongoose.connect(config.database);
+
+// pass passport for configuration
+//require('./server/config/passport')(passport);
 
 // Get our API routes
 const api = require('./server/routes/api');
@@ -13,6 +24,14 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// log to console
+app.use(morgan('dev'));
+
+// Use the passport package in our application
+app.use(passport.initialize());
+
+passport.use(bearerStrategy);
+
 // Point static path to dist
 app.use(express.static(path.join(__dirname, 'dist')));
 
@@ -20,7 +39,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use('/api', api);
 
 // Catch all other routes and return the index file
-app.get('*', (req, res) => {
+app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
@@ -38,4 +57,6 @@ const server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(port, () => console.log(`API running on localhost:${port}`));
+server.listen(port, function() {
+  console.log(`API running on localhost:${port}`)
+});

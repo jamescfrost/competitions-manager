@@ -1,22 +1,26 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const authentication = require("../api/authentication");
+const passport = require('passport');
+const competition = require('../api/competitions');
 
-var user = require('../api/user')
-var competition = require('../api/competitions');
-
-router.get('/', (req, res) => {
+router.get('/', function(req, res) {
   res.send('api works');
 });
 
-router.post('/authenticate', user.authenticate);
-router.get('/users', user.users);
+router.post('/register', authentication.register);
+
+router.post('/authenticate', authentication.authenticate);
 
 
+router.get('/competitions', passport.authenticate('bearer', { session: false }), competition.getAll);
+/*
+router.get('/competition/:id', passport.authenticate('bearer', { session: false }), competition.get);
+router.post('/competition', passport.authenticate('bearer', { session: false }), competition.add);
+router.delete('/competition/:id', passport.authenticate('bearer', { session: false }), competition.delete);
+router.put('/competition/:id', passport.authenticate('bearer', { session: false }), competition.update);
+*/
 
-router.get('/competitions', competition.getAll);
-router.get('/competition/:id', competition.get);
-router.post('/competition', competition.add);
-router.delete('/competition/:id', competition.delete);
-router.put('/competition/:id', competition.update);
+
 
 module.exports = router;
