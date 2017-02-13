@@ -22,7 +22,7 @@ export class AuthenticationService {
         // login successful if there's a jwt token in the response
         let token = response.json() && response.json().token;
         if (token) {
-          localStorage.setItem('id_token', token)
+          localStorage.setItem('id_token', token);
           // return true to indicate successful login
           return true;
         } else {

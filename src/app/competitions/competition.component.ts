@@ -12,8 +12,8 @@ import { Competition } from '../models/competition';
 export class CompetitionComponent implements OnInit {
 
   competition: Competition;
-
   types = ["League", "Knockout", "League and Knockout"];
+  loading = false;
 
   constructor(private competitionsService: CompetitionsService, private route: ActivatedRoute, private location: Location) {}
 
@@ -26,10 +26,12 @@ export class CompetitionComponent implements OnInit {
   }
 
   saveCompetition(event: Event) {
+    this.loading = true;
     event.preventDefault();
     this.competitionsService.saveCompetition(this.competition)
       .subscribe(competition => {
         this.competition = competition;
+        this.loading = false;
       })
   }
 

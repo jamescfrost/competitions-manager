@@ -47,8 +47,7 @@ const appRoutes: Routes = [
     path: '**',
     component: NotFoundComponent
   }
-
-]
+];
 
 @NgModule({
   imports: [
