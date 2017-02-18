@@ -1,95 +1,103 @@
-const Competition = require('../models/competition');
-
-
-
-
+const Competitor = require('../models/competitor');
 
 exports.getAll = function (req, res) {
-  Competition.find({userId: req.user._id}, function (err, competitions) {
+  Competitor.find({userId: req.user._id}, function (err, competitors) {
     if(err) {
       res.send(err);
     }
-    res.json(competitions);
+    res.json(competitors);
   });
 };
 
 exports.get = function (req, res) {
   var id = req.params.id;
-  Competition.findOne({ _id : id }, function (err, competition) {
+  Competitor.findOne({ _id : id }, function (err, competitor) {
     if(err) {
       res.send(err);
     }
-    res.json(competition);
+    res.json(competitor);
   })
 };
 
 exports.save = function (req, res) {
-  var saveCompetition = req.body;
-  Competition.findOne({ _id : saveCompetition._id }, function (err, competition) {
-    if(err) {
-      res.send(err);
-    }
-    competition.name = saveCompetition.name;
-    competition.description = saveCompetition.description;
-    competition.type = saveCompetition.type;
-    competition.save(function(err) {
+  var receivedCompetitor = req.body;
+  console.log(receivedCompetitor);
+  var competitor;
+  if (receivedCompetitor._id) {
+    Competitor.findOne({ _id : receivedCompetitor._id }, function (err, foundCompetitor) {
       if (err) {
         res.send(err);
+        return;
       }
-    });
-    res.json(competition);
-  })
+      competitor = foundCompetitor;
+    })
+  } else {
+    competitor = new Competitor();
+    competitor.userId = req.user._id;
+  }
+  console.log(competitor);
+  competitor.name = receivedCompetitor.name;
+  competitor.description = receivedCompetitor.description;
+  competitor.type = receivedCompetitor.type;
+  console.log(competitor);
+  competitor.save(function(err) {
+    if (err) {
+      res.send(err);
+      return;
+    }
+    res.json(competitor);
+  });
 };
 
 /*
 
  exports.add = function (req, res) {
- var competition = req.body;
- if (!competition.title || !(competition.isDone + '')) {
+ var competitor = req.body;
+ if (!competitor.title || !(competitor.isDone + '')) {
  res.status(400);
  res.json({
  "error": "Bad data"
  });
  } else {
- db.competitions.save(competition, function (err, competition) {
+ db.competitors.save(competitor, function (err, competitor) {
  if (err) {
  res.send(err);
  }
- res.json(competition);
+ res.json(competitor);
  })
  }
  };
 
  exports.delete = function (req, res) {
- db.competitions.remove({_id:mongojs.ObjectId(req.params.id)}, function (err, competition) {
+ db.competitors.remove({_id:mongojs.ObjectId(req.params.id)}, function (err, competitor) {
  if(err) {
  res.send(err);
  }
- res.json(competition);
+ res.json(competitor);
  })
  };
 
  exports.update = function (req, res) {
- var competition = req.body;
- var updcompetition = {};
+ var competitor = req.body;
+ var updcompetitor = {};
 
- if (competition.isDone) {
- updcompetition.isDone = competition.isDone;
+ if (competitor.isDone) {
+ updcompetitor.isDone = competitor.isDone;
  }
- if (competition.title) {
- updcompetition.title = competition.title;
+ if (competitor.title) {
+ updcompetitor.title = competitor.title;
  }
- if (!updcompetition) {
+ if (!updcompetitor) {
  res.status(400);
  res.json({
  "error" : "Bad data"
  })
  } else {
- db.competitions.update({_id:mongojs.ObjectId(req.params.id)}, updcompetition, {}, function (err, competition) {
+ db.competitors.update({_id:mongojs.ObjectId(req.params.id)}, updcompetitor, {}, function (err, competitor) {
  if(err) {
  res.send(err);
  }
- res.json(competition);
+ res.json(competitor);
  })
  }
  };

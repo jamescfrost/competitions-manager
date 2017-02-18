@@ -7,7 +7,7 @@ import { Competitor } from '../../models/competitor';
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'competition.component.html',
+  templateUrl: 'competitor.component.html',
 })
 export class CompetitionComponent implements OnInit {
 

@@ -2,8 +2,8 @@ import { Component, OnInit }      from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location }               from '@angular/common';
 import 'rxjs/add/operator/switchMap';
-import { CompetitionsService } from '../services/competitions.service';
-import { Competition } from '../models/competition';
+import { CompetitionsService } from '../../services/competitions.service';
+import { Competition } from '../../models/competition';
 
 @Component({
   moduleId: module.id,

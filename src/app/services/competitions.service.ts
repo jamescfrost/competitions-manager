@@ -3,6 +3,7 @@ import { Headers } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt';
 import 'rxjs/add/operator/map';
 import {Competition} from "../models/competition";
+import {Competitor} from "../models/competitor";
 
 @Injectable()
 export class CompetitionsService {
@@ -23,6 +24,13 @@ export class CompetitionsService {
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
     return this.authHttp.put('/api/competition/' + competition._id, JSON.stringify(competition), {headers: headers})
+      .map(res => res.json());
+  }
+
+  addCompetitor(competitor: Competitor) {
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.authHttp.post('/api/competitor/', JSON.stringify(competitor), {headers: headers})
       .map(res => res.json());
   }
 }

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DefaultComponent } from './default/default.component';
-import { DashboardComponent } from './home/dashboard.component';
-import { LoginComponent } from './login/login.component';
-import { LogoutComponent } from './logout/logout.component'
-import { RegisterComponent } from './register/register.component'
-import { CompetitionsComponent } from './competitions/competitions.component'
-import { CompetitionComponent } from './competitions/competition.component'
-import { NotFoundComponent } from './not-found/not-found.component';
+import { DefaultComponent } from './components/default/default.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { LoginComponent } from './components/login/login.component';
+import { LogoutComponent } from './components/logout/logout.component'
+import { RegisterComponent } from './components/register/register.component'
+import { CompetitionsComponent } from './components/competitions/competitions.component'
+import { CompetitionComponent } from './components/competition/competition.component'
+import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthGuard } from './guards/auth.guard';
 
 // Define the routes

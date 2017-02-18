@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CompetitionsService } from '../services/competitions.service'
-import { Competition } from '../models/competition'
+import { CompetitionsService } from '../../services/competitions.service'
+import { Competition } from '../../models/competition'
 
 @Component({
   selector: 'app-competitions',
-  templateUrl: './competitions.component.html'
+  templateUrl: 'competitions.component.html'
 })
 export class CompetitionsComponent implements OnInit {
 

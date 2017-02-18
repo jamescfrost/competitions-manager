@@ -1,5 +1,9 @@
 const Competition = require('../models/competition');
 
+
+
+
+
 exports.getAll = function (req, res) {
   Competition.find({userId: req.user._id}, function (err, competitions) {
     if(err) {
