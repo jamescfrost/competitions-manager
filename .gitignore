@@ -40,4 +40,4 @@ testem.log
 Thumbs.db
 
 #Protected Files
-/server/config/database.json
+/src/server/config/database.json

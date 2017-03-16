@@ -2,7 +2,7 @@ import { Component, OnInit }      from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location }               from '@angular/common';
 import 'rxjs/add/operator/switchMap';
-import { CompetitionsService } from '../../services/competitions.service';
+import { CompetitionService } from '../../services/competition.service';
 import { Competitor } from '../../models/competitor';
 
 @Component({
@@ -15,7 +15,7 @@ export class CompetitionComponent implements OnInit {
   types = ["Individual", "Team"];
   loading = false;
 
-  constructor(private competitionsService: CompetitionsService, private route: ActivatedRoute, private location: Location) {}
+  constructor(private competitionsService: CompetitionService, private route: ActivatedRoute, private location: Location) {}
 
   ngOnInit(): void {
     this.route.params

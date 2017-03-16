@@ -32,6 +32,7 @@ exports.save = function (req, res) {
     competition.name = saveCompetition.name;
     competition.description = saveCompetition.description;
     competition.type = saveCompetition.type;
+    competition.competitorIds = saveCompetition.competitorIds;
     competition.save(function(err) {
       if (err) {
         res.send(err);

@@ -14,10 +14,13 @@ import { AuthGuard } from './guards/auth.guard'
 import { NotFoundComponent } from './components/not-found/not-found.component'
 import { CompetitionsComponent } from './components/competitions/competitions.component'
 import { CompetitionComponent} from './components/competition/competition.component'
-import { CompetitionsService} from './services/competitions.service'
+import { CompetitionService} from './services/competition.service'
+import { CompetitorService} from './services/competitor.service'
 
 import {AppRoutingModule} from './app-routing.module';
 import {AuthenticationService} from "./services/authentication.service";
+
+import { Ng2AutoCompleteModule } from './components/ng2-auto-complete/ng2-auto-complete.module';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({}), http, options);
@@ -39,12 +42,14 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BrowserModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    Ng2AutoCompleteModule
   ],
   providers: [
     AuthGuard,
     AuthenticationService,
-    CompetitionsService,
+    CompetitionService,
+    CompetitorService,
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,

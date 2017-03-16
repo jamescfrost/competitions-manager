@@ -22,6 +22,10 @@ exports.get = function (req, res) {
 exports.save = function (req, res) {
   var receivedCompetitor = req.body;
   console.log(receivedCompetitor);
+  if (receivedCompetitor.name == null || receivedCompetitor.name.length == 0) {
+    res.json('Name not present');
+    return;
+  }
   var competitor;
   if (receivedCompetitor._id) {
     Competitor.findOne({ _id : receivedCompetitor._id }, function (err, foundCompetitor) {
@@ -35,16 +39,15 @@ exports.save = function (req, res) {
     competitor = new Competitor();
     competitor.userId = req.user._id;
   }
-  console.log(competitor);
   competitor.name = receivedCompetitor.name;
   competitor.description = receivedCompetitor.description;
   competitor.type = receivedCompetitor.type;
-  console.log(competitor);
   competitor.save(function(err) {
     if (err) {
-      res.send(err);
-      return;
+      console.log(err);
+      throw (err);
     }
+    console.log(competitor);
     res.json(competitor);
   });
 };

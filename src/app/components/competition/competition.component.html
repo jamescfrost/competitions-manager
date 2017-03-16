@@ -1,26 +1,54 @@
 <div class="col-md-6 col-md-offset-3">
   <h2>Edit Competition</h2>
-  <form *ngIf="competition" name="form" (ngSubmit)="f.form.valid && saveCompetition($event)" #f="ngForm" novalidate>
+  <form name="form" (ngSubmit)="$event.preventDefault(); f.form.valid && saveCompetition();" #f="ngForm" novalidate>
     <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !name.valid }">
       <label for="name">Name</label>
-      <input id="name" type="text" class="form-control" name="name" [(ngModel)]="competition.name" #name="ngModel" required />
+      <input id="name" type="text" class="form-control" name="name" [(ngModel)]="competitionName" #name="ngModel"
+             required/>
       <!--<div [hidden]="name.valid || name.pristine" class="alert alert-danger">Name is required</div>-->
       <div *ngIf="f.submitted && !name.valid" class="help-block">Name is required</div>
     </div>
     <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !description.valid }">
       <label for="description">Description</label>
-      <input id="description" type="description" class="form-control" name="description" [(ngModel)]="competition.description" #description="ngModel" required />
+      <input id="description" type="description" class="form-control" name="description"
+             [(ngModel)]="competitionDescription" #description="ngModel" required/>
     </div>
     <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !type.valid }">
       <label for="type">Type</label>
-      <select class="form-control" id="type" [(ngModel)]="competition.type" name="type" #type="ngModel" required>
-        <option *ngFor="let t of types" [value]="t">{{t}}</option>
+      <select class="form-control" id="type" [(ngModel)]="competitionType" name="type" #type="ngModel" required>
+        <option *ngFor="let t of availableTypes" [value]="t">{{t}}</option>
       </select>
       <div *ngIf="f.submitted && !type.valid" class="help-block">Type is required</div>
     </div>
+    <div>
+      <label>Competitors</label>
+      <div *ngFor="let competitor of competitors" class="form-group">
+        <div class="input-group">
+          <input ng2-ng2-auto-complete
+                 [source]="availableCompetitors"
+                 autocomplete="off"
+                 [(ngModel)]="competitor.value"
+                 placeholder="Enter competitor"
+                 list-formatter="name, type, description"
+                 display-property-name="name"
+                 min-chars="1"
+                 name="_competitor[{{competitor.id}}]"
+                 class="form-control"/>
+          <span class="input-group-btn">
+            <button [disabled]="loading" class="btn" (click)="removeCompetitor(competitor); $event.preventDefault();">Remove</button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <button [disabled]="loading" class="btn" (click)="addCompetitor(); $event.preventDefault();">Add competitor
+      </button>
+    </div>
+
     <div class="form-group">
       <button [disabled]="loading" class="btn btn-primary">Save</button>
-      <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      <img *ngIf="loading"
+           src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
     </div>
     <div *ngIf="error" class="alert alert-danger">{{error}}</div>
   </form>

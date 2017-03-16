@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CompetitionsService } from '../../services/competitions.service'
+import { CompetitionService } from '../../services/competition.service'
 import { Competition } from '../../models/competition'
 
 @Component({
@@ -10,10 +10,10 @@ export class CompetitionsComponent implements OnInit {
 
   competitions: Competition[];
 
-  constructor(private competitionsService: CompetitionsService) { }
+  constructor(private competitionService: CompetitionService) { }
 
   ngOnInit() {
-    this.competitionsService.getAllCompetitions()
+    this.competitionService.getAllCompetitions()
       .subscribe(competitions => {
         this.competitions = competitions;
       })

@@ -2,12 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 // set up a mongoose models
-var CompetitorSchema = new Schema({
+var CompetitionSchema = new Schema({
   name: {
-    type: String,
-    required: true
-  },
-  userId: {
     type: String,
     required: true
   },
@@ -18,7 +14,13 @@ var CompetitorSchema = new Schema({
     type: String,
     required: true
   },
-
+  userId: {
+    type: String,
+    required: true
+  },
+  competitorIds: {
+    type: [String]
+  }
 });
 
-module.exports = mongoose.model('Competitor', CompetitorSchema);
+module.exports = mongoose.model('Competition', CompetitionSchema);

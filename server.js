@@ -6,17 +6,18 @@ const http = require('http');
 const morgan  = require('morgan');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const config = require('./server/config/database.json');
-const bearerStrategy = require('./server/api/authentication').bearerStrategy;
+const config = require('./src/server/config/database.json');
+const bearerStrategy = require('./src/server/api/authentication').bearerStrategy;
 
 // connect to database
+mongoose.Promise = global.Promise;
 mongoose.connect(config.database);
 
 // pass passport for configuration
 //require('./server/config/passport')(passport);
 
 // Get our API routes
-const api = require('./server/routes/api');
+const api = require('./src/server/routes/api');
 
 const app = express();
 
