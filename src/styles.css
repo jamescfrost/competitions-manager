@@ -3,13 +3,18 @@ body {
   padding-top: 20px;
   padding-bottom: 20px;
 }
+
 header {
   overflow: hidden;
   margin-bottom: 20px;
 }
+
 @keyframes spinner {
-  to {transform: rotate(360deg);}
+  to {
+    transform: rotate(360deg);
+  }
 }
+
 .spinner:before {
   content: '';
   box-sizing: border-box;
@@ -24,4 +29,8 @@ header {
   border: 2px solid #ccc;
   border-top-color: #333;
   animation: spinner .6s linear infinite;
+}
+
+footer {
+  clear: both;
 }

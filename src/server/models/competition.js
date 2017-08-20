@@ -3,6 +3,10 @@ var Schema = mongoose.Schema;
 
 // set up a mongoose models
 var CompetitionSchema = new Schema({
+  groupTag: {
+    type: String,
+    required: false
+  },
   name: {
     type: String,
     required: true

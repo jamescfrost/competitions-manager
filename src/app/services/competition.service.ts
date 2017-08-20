@@ -16,7 +16,7 @@ export class CompetitionService {
       .map(res => res.json());
   }
 
-  getCompetition(id: number) : Observable<Competition> {
+  getCompetition(id: string) : Observable<Competition> {
     return this.authHttp.get('/api/competition/' + id)
       .map(res => res.json());
   }

@@ -14,14 +14,16 @@ import {ObjectWrapper} from '../../models/object-wrapper'
 })
 export class CompetitionComponent implements OnInit {
 
-  availableTypes = ["League", "Knockout", "League and Knockout"];
+  availableCompetitionTypes = ["League", "Knockout", "League and Knockout"];
   availableCompetitors: Competitor[];
 
   competition: Competition;
+  competitionGroupTag: string;
   competitionName: string;
   competitionDescription: string;
   competitionType: string;
-  loading = false;
+  loading: boolean = false;
+  saving: boolean = false;
   competitors: ObjectWrapper[] = [];
   index: number = 0;
 
@@ -35,37 +37,42 @@ export class CompetitionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.competitorService.getAllCompetitors()
-      .subscribe((competitors: Competitor[]) => {
-        this.availableCompetitors = competitors;
-      });
-    this.route.params
-      .switchMap((params: Params) => this.competitionService.getCompetition(params['id']))
-      .subscribe((competition: Competition) => {
-        var tasks: Observable<Competitor>[] = [];
-        this.competition = competition;
-        this.competitionName = competition.name;
-        this.competitionDescription = competition.description;
-        this.competitionType = competition.type;
-        for (let competitorId of competition.competitorIds) {
-          tasks.push(this.competitorService.getCompetitor(competitorId));
-        }
-        Observable.forkJoin(tasks)
-          .subscribe(
-            (competitors) => {
-              for (let competitor of competitors) {
-                this.addCompetitor(competitor);
-              }
-            },
-            (err) => {
-              console.log(err);
-            },
-            () => {
-              while (this.competitors.length < 2) {
-                this.addCompetitor();
-              }
-            });
-      });
+    this.loading = true;
+    this.route.params.subscribe(params => {
+      var tasks = [];
+      tasks.push(this.competitionService.getCompetition(params['id']));
+      tasks.push(this.competitorService.getAllCompetitors());
+      Observable.forkJoin(tasks)
+        .subscribe((results: any[]) => {
+          let competition = results[0];
+          this.competition = competition;
+          this.competitionGroupTag = competition.groupTag;
+          this.competitionName = competition.name;
+          this.competitionDescription = competition.description;
+          this.competitionType = competition.type;
+          var availableCompetitors = results[1];
+          var subTasks = [];
+          for (let competitorId of competition.competitorIds) {
+            var competitor = availableCompetitors.find(x => x._id == competitorId);
+            if (competitor) {
+              subTasks.push(Observable.of(competitor));
+            } else {
+              subTasks.push(this.competitorService.getCompetitor(competitorId));
+            }
+          }
+          Observable.forkJoin(subTasks)
+            .subscribe(
+              (competitors) => competitors.forEach((competitor) => this.addCompetitor(competitor)),
+              (err) => console.log(err),
+              () => {
+                while (this.competitors.length < 4) {
+                  this.addCompetitor();
+                }
+                this.loading = false;
+              });
+        });
+
+    });
   }
 
   addCompetitor(competitor?: any) {
@@ -85,7 +92,7 @@ export class CompetitionComponent implements OnInit {
   }
 
   saveCompetition() {
-    this.loading = true;
+    this.saving = true;
     var tasks: Observable<Competitor>[] = [];
     for (let competitorWrapper of this.competitors) {
       if (typeof competitorWrapper.value === "string" && /\S/.test(competitorWrapper.value)) {
@@ -122,34 +129,10 @@ export class CompetitionComponent implements OnInit {
           this.competitionService.saveCompetition(this.competition)
             .subscribe((competition) => {
               this.competition = competition;
-              this.loading = false;
+              this.saving = false;
             });
         });
   }
 
-  /*  addCompetition(event: Event) {
-   event.preventDefault();
-   var newCompetition = new Competition();
-   newCompetition.name = this.name;
-   this.competitionsService.addCompetition(newCompetition)
-   .subscribe(competition => {
-   this.competitions.push(competition);
-   this.name = '';
-   })
-   }
-
-   deleteCompetition(id: string) {
-   this.competitionService.deleteCompetition(id)
-   .subscribe(data => {
-   console.log(data);
-   if (data.n == 1) {
-   for (var i = 0; i < competitions.length; i++) {
-   if (competitions[i]._id == id) {
-   competitions.splice(i, 1);
-   }
-   }
-   }
-   })
-   }*/
 
 }

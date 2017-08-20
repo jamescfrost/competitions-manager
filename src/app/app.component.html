@@ -1,27 +1,39 @@
-<div class="container">
-  <header>
-    <h3 class="col-lg-6 text-muted">Competition Manager</h3>
-    <div class="col-lg-6">
-      <nav class="float-lg-right">
-        <ul class="nav nav-pills">
-          <li *ngIf="!authService.isAuthenticated()" role="presentation" class="nav-item"><a [routerLink]="['/login']"
-                                                                                             [routerLinkActive]="['active']"
-                                                                                             class="nav-link">Login</a>
+<header>
+  <div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+
+      <div class="navbar-header">
+        <div class="navbar-brand">Competition Manager</div>
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav class="navbar-collapse collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li *ngIf="!authService.isAuthenticated()" role="presentation" [routerLinkActive]="['active']">
+            <a [routerLink]="['/login']">Login</a>
           </li>
-          <li *ngIf="!authService.isAuthenticated()" role="presentation" class="nav-item"><a
-            [routerLink]="['/register']" [routerLinkActive]="['active']" class="nav-link">Register</a></li>
-          <li *ngIf="authService.isAuthenticated()" role="presentation" class="nav-item"><a
-            [routerLink]="['/dashboard']" [routerLinkActive]="['active']" class="nav-link">Dashboard</a></li>
-          <li *ngIf="authService.isAuthenticated()" role="presentation" class="nav-item"><a
-            [routerLink]="['/competitions']" [routerLinkActive]="['active']" class="nav-link">Competitions</a></li>
-          <li *ngIf="authService.isAuthenticated()" role="presentation" class="nav-item"><a [routerLink]="['/logout']"
-                                                                                            [routerLinkActive]="['active']"
-                                                                                            class="nav-link">Logout</a>
+          <li *ngIf="!authService.isAuthenticated()" role="presentation" [routerLinkActive]="['active']">
+            <a [routerLink]="['/register']">Register</a>
+          </li>
+          <li *ngIf="authService.isAuthenticated()" role="presentation" [routerLinkActive]="['active']">
+            <a [routerLink]="['/dashboard']">Dashboard</a>
+          </li>
+          <li *ngIf="authService.isAuthenticated()" role="presentation" [routerLinkActive]="['active']">
+            <a [routerLink]="['/competitions']">Competitions</a>
+          </li>
+          <li *ngIf="authService.isAuthenticated()" role="presentation" [routerLinkActive]="['active']">
+            <a [routerLink]="['/logout']">Logout</a>
           </li>
         </ul>
       </nav>
     </div>
-  </header>
+  </div>
+</header>
+
+<div class="container">
 
   <div class="content">
     <router-outlet></router-outlet>

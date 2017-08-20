@@ -1,6 +1,9 @@
-<div class="row" *ngFor="let competition of competitions">
-    <div class="card card-block">
-      <h4 class="card-title"><a [routerLink]="['/competition', competition._id]">{{competition.name}}</a></h4>
-      <p class="card-text">{{competition.description}}</p>
+<div>
+  <h2>Competitions</h2>
+  <div class="row" *ngFor="let competition of competitions">
+    <div class="col-lg-12">
+      <h4><a [routerLink]="['/competition', competition._id]">{{competition.name}}</a></h4>
+      <p>{{competition.description}}</p>
     </div>
+  </div>
 </div>
