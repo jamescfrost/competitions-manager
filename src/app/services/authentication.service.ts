@@ -10,7 +10,7 @@ export class AuthenticationService {
   constructor(private http: Http) {}
 
   isAuthenticated(): boolean {
-    return tokenNotExpired();
+    return tokenNotExpired('id_token');
   }
 
   login(username: string, password: string): Observable<boolean> {

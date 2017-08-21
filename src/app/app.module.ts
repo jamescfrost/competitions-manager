@@ -22,8 +22,15 @@ import {AuthenticationService} from "./services/authentication.service";
 
 import { Ng2AutoCompleteModule } from './components/ng2-auto-complete/ng2-auto-complete.module';
 
+// export function authHttpServiceFactory(http: Http, options: RequestOptions) {
+//   return new AuthHttp(new AuthConfig(), http, options);
+// }
+
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
-  return new AuthHttp( new AuthConfig({}), http, options);
+  return new AuthHttp(new AuthConfig({
+    tokenName: 'id_token',
+    tokenGetter: (() => localStorage.getItem('id_token')),
+  }), http, options);
 }
 
 @NgModule({
