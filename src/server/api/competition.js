@@ -1,9 +1,5 @@
 const Competition = require('../models/competition');
 
-
-
-
-
 exports.getAll = function (req, res) {
   Competition.find({userId: req.user._id}, function (err, competitions) {
     if(err) {
@@ -25,10 +21,12 @@ exports.get = function (req, res) {
 
 exports.save = function (req, res) {
   var saveCompetition = req.body;
+  console.log(saveCompetition);
   Competition.findOne({ _id : saveCompetition._id }, function (err, competition) {
     if(err) {
       res.send(err);
     }
+    competition.groupTag = saveCompetition.groupTag;
     competition.name = saveCompetition.name;
     competition.description = saveCompetition.description;
     competition.type = saveCompetition.type;

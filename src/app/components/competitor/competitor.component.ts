@@ -1,6 +1,6 @@
-import { Component, OnInit }      from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Location }               from '@angular/common';
+import { Location } from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 import { CompetitionService } from '../../services/competition.service';
 import { Competitor } from '../../models/competitor';
@@ -12,7 +12,7 @@ import { Competitor } from '../../models/competitor';
 export class CompetitionComponent implements OnInit {
 
   competitor: Competitor;
-  types = ["Individual", "Team"];
+  types = ['Individual', 'Team'];
   loading = false;
 
   constructor(private competitionsService: CompetitionService, private route: ActivatedRoute, private location: Location) {}

@@ -27,7 +27,7 @@
     "core-js": "^2.4.1",
     "express": "^4.14.0",
     "jwt-simple": "^0.5.1",
-    "mongoose": "^4.10.8",
+    "mongoose": "4.10.8",
     "morgan": "^1.8.1",
     "ng2-auto-complete": "^0.12.0",
     "passport": "^0.4.0",

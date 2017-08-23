@@ -2,7 +2,21 @@ const Competitor = require('../models/competitor');
 
 exports.getAll = function (req, res) {
   Competitor.find({userId: req.user._id}, function (err, competitors) {
-    if(err) {
+    if (err) {
+      res.send(err);
+    }
+    res.json(competitors);
+  });
+};
+
+exports.getAllByGroupTag = function (req, res) {
+  var userId = req.user._id;
+  var groupTag = req.params.groupTag;
+  if (groupTag == '') {
+    res.json({});
+  }
+  Competitor.find({userId: userId, groupTag: groupTag}, function (err, competitors) {
+    if (err) {
       res.send(err);
     }
     res.json(competitors);
@@ -11,8 +25,8 @@ exports.getAll = function (req, res) {
 
 exports.get = function (req, res) {
   var id = req.params.id;
-  Competitor.findOne({ _id : id }, function (err, competitor) {
-    if(err) {
+  Competitor.findOne({_id: id}, function (err, competitor) {
+    if (err) {
       res.send(err);
     }
     res.json(competitor);
@@ -26,29 +40,30 @@ exports.save = function (req, res) {
     res.json('Name not present');
     return;
   }
-  var competitor;
-  if (receivedCompetitor._id) {
-    Competitor.findOne({ _id : receivedCompetitor._id }, function (err, foundCompetitor) {
-      if (err) {
-        res.send(err);
-        return;
-      }
-      competitor = foundCompetitor;
-    })
-  } else {
-    competitor = new Competitor();
-    competitor.userId = req.user._id;
-  }
-  competitor.name = receivedCompetitor.name;
-  competitor.description = receivedCompetitor.description;
-  competitor.type = receivedCompetitor.type;
-  competitor.save(function(err) {
+  Competitor.findOne({_id: receivedCompetitor._id}, function (err, foundCompetitor) {
     if (err) {
-      console.log(err);
-      throw (err);
+      res.send(err);
+      return;
     }
-    console.log(competitor);
-    res.json(competitor);
+    var competitor = foundCompetitor;
+    if (!competitor) {
+      competitor = new Competitor();
+      competitor.userId = req.user._id;
+    }
+    // console.log("from db");
+    // console.log(competitor);
+    competitor.groupTag = receivedCompetitor.groupTag;
+    competitor.name = receivedCompetitor.name;
+    competitor.description = receivedCompetitor.description;
+    competitor.type = receivedCompetitor.type;
+    // competitor.save(function (err) {
+    //   if (err) {
+    //     console.log(err);
+    //     throw (err);
+    //   }
+    //   console.log(competitor);
+    //   res.json(competitor);
+    // })
   });
 };
 

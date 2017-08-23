@@ -1,4 +1,4 @@
-import {Component, OnInit}      from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import {CompetitionService} from '../../services/competition.service';
@@ -14,7 +14,10 @@ import {ObjectWrapper} from '../../models/object-wrapper'
 })
 export class CompetitionComponent implements OnInit {
 
-  availableCompetitionTypes = ["League", "Knockout", "League and Knockout"];
+  availableCompetitionGroupTags = [];
+
+  availableCompetitionTypes = ['League', 'Knockout', 'League and Knockout'];
+
   availableCompetitors: Competitor[];
 
   competition: Competition;
@@ -22,10 +25,10 @@ export class CompetitionComponent implements OnInit {
   competitionName: string;
   competitionDescription: string;
   competitionType: string;
-  loading: boolean = false;
-  saving: boolean = false;
+  loading = false;
+  saving = false;
   competitors: ObjectWrapper[] = [];
-  index: number = 0;
+  index = 0;
 
   json(obj) {
     return JSON.stringify(obj);
@@ -39,53 +42,89 @@ export class CompetitionComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.route.params.subscribe(params => {
-      var tasks = [];
-      tasks.push(this.competitionService.getCompetition(params['id']));
-      tasks.push(this.competitorService.getAllCompetitors());
-      Observable.forkJoin(tasks)
-        .subscribe((results: any[]) => {
-          let competition = results[0];
+      this.competitionService.getCompetition(params['id'])
+        .subscribe((competition: Competition) => {
           this.competition = competition;
           this.competitionGroupTag = competition.groupTag;
           this.competitionName = competition.name;
           this.competitionDescription = competition.description;
           this.competitionType = competition.type;
-          var availableCompetitors = results[1];
-          var subTasks = [];
-          for (let competitorId of competition.competitorIds) {
-            var competitor = availableCompetitors.find(x => x._id == competitorId);
-            if (competitor) {
-              subTasks.push(Observable.of(competitor));
-            } else {
-              subTasks.push(this.competitorService.getCompetitor(competitorId));
-            }
-          }
-          Observable.forkJoin(subTasks)
-            .subscribe(
-              (competitors) => competitors.forEach((competitor) => this.addCompetitor(competitor)),
-              (err) => console.log(err),
-              () => {
-                while (this.competitors.length < 4) {
-                  this.addCompetitor();
+          this.competitorService.getAllCompetitorsByGroupTag(this.competitionGroupTag)
+            .subscribe((availableCompetitors: Competitor[]) => {
+              this.availableCompetitors = availableCompetitors;
+              const subTasks = [];
+              for (const competitorId of competition.competitorIds) {
+                const competitor = this.availableCompetitors.find(x => x._id === competitorId);
+                if (competitor) {
+                  this.addCompetitor(competitor);
+                } else {
+                  subTasks.push(this.competitorService.getCompetitor(competitorId));
                 }
-                this.loading = false;
-              });
-        });
+              }
+              Observable.forkJoin(subTasks)
+                .subscribe(
+                  (competitors: Competitor[]) => competitors.forEach((competitor) => this.addCompetitor(competitor)),
+                  (err) => console.log(err),
+                  () => {
+                    while (this.competitors.length < 4) {
+                      this.addCompetitor();
+                    }
+                    this.loading = false;
+                  });
 
+            });
+        });
     });
+
+
+    // this.route.params.subscribe(params => {
+    //   const tasks = [];
+    //   tasks.push(this.competitionService.getCompetition(params['id']));
+    //   tasks.push(this.competitorService.getAllCompetitors());
+    //   Observable.forkJoin(tasks)
+    //     .subscribe((results: any[]) => {
+    //       const competition = results[0];
+    //       this.competition = competition;
+    //       this.competitionGroupTag = competition.groupTag;
+    //       this.competitionName = competition.name;
+    //       this.competitionDescription = competition.description;
+    //       this.competitionType = competition.type;
+    //       this.availableCompetitors = results[1];
+    //       const subTasks = [];
+    //       for (const competitorId of competition.competitorIds) {
+    //         const competitor = this.availableCompetitors.find(x => x._id === competitorId);
+    //         if (competitor) {
+    //           this.addCompetitor(competitor);
+    //         } else {
+    //           subTasks.push(this.competitorService.getCompetitor(competitorId));
+    //         }
+    //       }
+    //       Observable.forkJoin(subTasks)
+    //         .subscribe(
+    //           (competitors) => competitors.forEach((competitor) => this.addCompetitor(competitor)),
+    //           (err) => console.log(err),
+    //           () => {
+    //             while (this.competitors.length < 4) {
+    //               this.addCompetitor();
+    //             }
+    //             this.loading = false;
+    //           });
+    //     });
+    //
+    // });
   }
 
   addCompetitor(competitor?: any) {
     if (competitor == null) {
       competitor = '';
     }
-    var competitorWrapper = new ObjectWrapper(this.index.toString(), competitor);
+    const competitorWrapper = new ObjectWrapper(this.index.toString(), competitor);
     this.competitors.push(competitorWrapper);
     this.index++;
   }
 
   removeCompetitor(competitorWrapper: ObjectWrapper) {
-    var index = this.competitors.indexOf(competitorWrapper);
+    const index = this.competitors.indexOf(competitorWrapper);
     if (index > -1) {
       this.competitors.splice(index, 1);
     }
@@ -93,20 +132,24 @@ export class CompetitionComponent implements OnInit {
 
   saveCompetition() {
     this.saving = true;
-    var tasks: Observable<Competitor>[] = [];
-    for (let competitorWrapper of this.competitors) {
-      if (typeof competitorWrapper.value === "string" && /\S/.test(competitorWrapper.value)) {
-        var name = competitorWrapper.value;
-        var competitor = new Competitor();
+    const tasks: Observable<Competitor>[] = [];
+    for (const competitorWrapper of this.competitors) {
+      let competitor: Competitor;
+      if (typeof competitorWrapper.value === 'string' && /\S/.test(competitorWrapper.value)) {
+        const name = competitorWrapper.value;
+        competitor = new Competitor();
         competitor.name = name;
-        tasks.push(this.competitorService.saveCompetitor(competitor));
+      } else {
+        competitor = competitorWrapper.value;
       }
+      competitor.groupTag = this.competition.groupTag;
+      tasks.push(this.competitorService.saveCompetitor(competitor));
     }
     Observable.forkJoin(tasks)
       .subscribe(
         (results) => {
-          for (let competitorWrapper of this.competitors) {
-            if (typeof competitorWrapper.value === "string" && /\S/.test(competitorWrapper.value)) {
+          for (const competitorWrapper of this.competitors) {
+            if (typeof competitorWrapper.value === 'string' && /\S/.test(competitorWrapper.value)) {
               competitorWrapper.value = results.shift();
               this.availableCompetitors.push(competitorWrapper.value);
             }
@@ -116,12 +159,13 @@ export class CompetitionComponent implements OnInit {
           console.log(err);
         },
         () => {
-          var competitorIds: string[] = [];
-          for (let competitorWrapper of this.competitors) {
-            if (typeof competitorWrapper.value !== "string") {
+          const competitorIds: string[] = [];
+          for (const competitorWrapper of this.competitors) {
+            if (typeof competitorWrapper.value !== 'string') {
               competitorIds.push(competitorWrapper.value._id);
             }
           }
+          this.competition.groupTag = this.competitionGroupTag;
           this.competition.name = this.competitionName;
           this.competition.description = this.competitionDescription;
           this.competition.type = this.competitionType;

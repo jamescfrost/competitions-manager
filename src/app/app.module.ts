@@ -18,7 +18,7 @@ import { CompetitionService} from './services/competition.service'
 import { CompetitorService} from './services/competitor.service'
 
 import {AppRoutingModule} from './app-routing.module';
-import {AuthenticationService} from "./services/authentication.service";
+import {AuthenticationService} from './services/authentication.service';
 
 import { Ng2AutoCompleteModule } from './components/ng2-auto-complete/ng2-auto-complete.module';
 

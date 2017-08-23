@@ -17,6 +17,7 @@ router.get('/competition/:id', passport.authenticate('bearer', { session: false 
 router.put('/competition/:id', passport.authenticate('bearer', { session: false }), competition.save);
 
 router.get('/competitors', passport.authenticate('bearer', { session: false }), competitor.getAll);
+router.get('/competitors/:groupTag', passport.authenticate('bearer', { session: false }), competitor.getAllByGroupTag);
 router.get('/competitor/:id', passport.authenticate('bearer', { session: false }), competitor.get);
 router.put('/competitor/:id', passport.authenticate('bearer', { session: false }), competitor.save);
 router.post('/competitor', passport.authenticate('bearer', { session: false }), competitor.save);

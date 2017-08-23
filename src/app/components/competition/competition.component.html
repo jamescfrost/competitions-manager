@@ -2,7 +2,7 @@
   <h2>Edit Competition</h2>
   <div *ngIf="loading" class="spinner"></div>
   <form *ngIf="!loading" name="form" (ngSubmit)="$event.preventDefault(); f.form.valid && saveCompetition();" #f="ngForm" novalidate>
-    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !_competitionGroupTag.valid }">
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !groupTag.valid }">
       <label for="_competitionGroupTag">Group Tag</label>
       <input ng2-ng2-auto-complete
              id="_competitionGroupTag"
@@ -12,20 +12,21 @@
              placeholder="Enter competition group tag"
              min-chars="1"
              name="_competitorGroupTag"
-             class="form-control" />
+             class="form-control"
+             #groupTag = "ngModel" />
     </div>
-    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !_competitionName.valid }">
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !name.valid }">
       <label for="_competitionName">Name</label>
       <input id="_competitionName" type="text" class="form-control" name="_competitionName" [(ngModel)]="competitionName" #name="ngModel"
              required/>
       <div *ngIf="f.submitted && !name.valid" class="help-block">Name is required</div>
     </div>
-    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !_competitionDescription.valid }">
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !description.valid }">
       <label for="_competitionDescription">Description</label>
       <input id="_competitionDescription" type="_competitionDescription" class="form-control" name="_competitionDescription"
              [(ngModel)]="competitionDescription" #description="ngModel" required/>
     </div>
-    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !_competitionType.valid }">
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !type.valid }">
       <label for="_competitionType">Type</label>
       <select class="form-control" id="_competitionType" [(ngModel)]="competitionType" name="_competitionType" #type="ngModel" required>
         <option *ngFor="let t of availableCompetitionTypes" [value]="t">{{t}}</option>
