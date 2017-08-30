@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt';
-import 'rxjs/add/operator/map';
-import {Competitor} from '../models/competitor';
-import {Observable} from 'rxjs';
+import { Competitor } from '../models/competitor';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class CompetitorService {

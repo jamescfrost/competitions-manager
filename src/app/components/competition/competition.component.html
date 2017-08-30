@@ -17,7 +17,7 @@
     </div>
     <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !name.valid }">
       <label for="_competitionName">Name</label>
-      <input id="_competitionName" type="text" class="form-control" name="_competitionName" [(ngModel)]="competitionName" #name="ngModel"
+      <input id="_competitionName" class="form-control" name="_competitionName" [(ngModel)]="competitionName" #name="ngModel"
              required/>
       <div *ngIf="f.submitted && !name.valid" class="help-block">Name is required</div>
     </div>

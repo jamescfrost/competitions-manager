@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 // set up a mongoose models
-var DomainSchema = new Schema({
+const DomainSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -14,7 +14,7 @@ var DomainSchema = new Schema({
 });
 
 DomainSchema.statics.findByUser = function(user, callback) {
-  var domainIds = user.domains;
+  const domainIds = user.domains;
   // var domainObjectIds = [];
   // for (domainId of domainIds) {
   //   var objectId = new mongoose.Types.ObjectId(domainId);

@@ -22,7 +22,7 @@ const UserSchema = new Schema({
 });
 
 UserSchema.pre('save', function (next) {
-  var user = this;
+  const user = this;
   if (this.isModified('password') || this.isNew) {
     bcrypt.genSalt(10, function (err, salt) {
       if (err) {
@@ -60,9 +60,8 @@ UserSchema.statics.findOneByToken = function (token, callback) {
 
 UserSchema.methods.createToken = function () {
   const payLoad = { "userId": this._id };
-  const token = jwt.encode(payLoad, config.secret);
-  return token;
-}
+  return jwt.encode(payLoad, config.secret);
+};
 
 UserSchema.methods.comparePassword = function (passw) {
   return bcrypt.compareSync(passw, this.password);
@@ -70,7 +69,7 @@ UserSchema.methods.comparePassword = function (passw) {
 
 UserSchema.methods.hasDomainAuthority = function (domainId) {
   return this.domains.includes(domainId);
-}
+};
 
 UserSchema.methods.getDomains = function (callback) {
   Domain.findByUser(this, callback);

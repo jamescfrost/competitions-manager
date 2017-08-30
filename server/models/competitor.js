@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 // set up a mongoose models
-var CompetitorSchema = new Schema({
+const CompetitorSchema = new Schema({
   name: {
     type: String,
     required: true

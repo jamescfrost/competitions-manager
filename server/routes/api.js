@@ -26,7 +26,7 @@ router.post('/register', function (req, res) {
   if (!req.body.name || !req.body.password) {
     res.json({success: false, msg: 'Please provide name and password.'});
   } else {
-    var user = new User({
+    const user = new User({
       username: req.body.username,
       password: req.body.password
     });
@@ -47,7 +47,7 @@ router.post('/authenticate', function (req, res) {
       res.send({success: false, msg: 'Authentication failed. User not found.'});
     } else {
       if (user.comparePassword(req.body.password)) {
-        const token = user.createToken()
+        const token = user.createToken();
         res.json({success: true, token: token});
       } else {
         res.send({success: false, msg: 'Authentication failed. Wrong password.'});

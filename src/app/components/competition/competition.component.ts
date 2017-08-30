@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
-import 'rxjs/add/operator/switchMap';
 import {CompetitionService} from '../../services/competition.service';
 import {CompetitorService} from '../../services/competitor.service';
 import {Competition} from '../../models/competition'
 import {Competitor} from '../../models/competitor'
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {ObjectWrapper} from '../../models/object-wrapper'
 
 @Component({
