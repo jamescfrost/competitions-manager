@@ -13,10 +13,10 @@
       <nav class="navbar-collapse collapse" id="myNavbar">
         <ul class="nav navbar-nav navbar-right">
           <li *ngIf="!authService.isAuthenticated()" role="presentation" [routerLinkActive]="['active']">
-            <a [routerLink]="['/login']">Login</a>
+            <a [routerLink]="['/login']"><span class="glyphicon glyphicon-log-in"></span> Login</a>
           </li>
           <li *ngIf="!authService.isAuthenticated()" role="presentation" [routerLinkActive]="['active']">
-            <a [routerLink]="['/register']">Register</a>
+            <a [routerLink]="['/register']"><span class="glyphicon glyphicon-user"></span> Register</a>
           </li>
           <li *ngIf="authService.isAuthenticated()" role="presentation" [routerLinkActive]="['active']">
             <a [routerLink]="['/dashboard']">Dashboard</a>
@@ -25,7 +25,7 @@
             <a [routerLink]="['/competitions']">Competitions</a>
           </li>
           <li *ngIf="authService.isAuthenticated()" role="presentation" [routerLinkActive]="['active']">
-            <a [routerLink]="['/logout']">Logout</a>
+            <a [routerLink]="['/logout']"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
           </li>
         </ul>
       </nav>

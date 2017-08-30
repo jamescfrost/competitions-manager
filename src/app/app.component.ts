@@ -1,16 +1,19 @@
 import { Component } from '@angular/core';
-import {AuthenticationService} from './services/authentication.service';
+import { Router } from '@angular/router';
+import { AuthenticationService } from './services/authentication.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'app',
+  selector: 'app-main',
   templateUrl: 'app.component.html'
 })
 
 export class AppComponent {
 
-  constructor(private authService: AuthenticationService) {
-
+  constructor(private authService: AuthenticationService, router: Router) {
+    if (authService.isAuthenticated()) {
+      router.navigate(['dashboard']);
+    }
   }
 
 }

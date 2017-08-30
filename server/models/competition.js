@@ -3,10 +3,6 @@ var Schema = mongoose.Schema;
 
 // set up a mongoose models
 var CompetitionSchema = new Schema({
-  groupTag: {
-    type: String,
-    required: false
-  },
   name: {
     type: String,
     required: true
@@ -18,12 +14,16 @@ var CompetitionSchema = new Schema({
     type: String,
     required: true
   },
-  userId: {
+  creator: {
     type: String,
     required: true
   },
-  competitorIds: {
+  competitors: {
     type: [String]
+  },
+  domain: {
+    type: String,
+    required: true
   }
 });
 

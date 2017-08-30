@@ -1,12 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 body {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
-header {
-  overflow: hidden;
-  margin-bottom: 20px;
+  padding-top: 60px;
+  padding-bottom: 60px;
 }
 
 @keyframes spinner {
@@ -32,5 +27,6 @@ header {
 }
 
 footer {
+  padding-top:20px;
   clear: both;
 }
