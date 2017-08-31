@@ -10,8 +10,8 @@ export class CompetitionService {
 
   constructor(private authHttp: AuthHttp) {}
 
-  getAllCompetitions(): Observable<Competition[]> {
-    return this.authHttp.get('/api/competitions')
+  getAllCompetitions(domain: String): Observable<Competition[]> {
+    return this.authHttp.get(`/api/${domain}/competitions`)
       .map(res => res.json());
   }
 

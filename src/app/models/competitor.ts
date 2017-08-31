@@ -1,6 +1,6 @@
 export class Competitor {
   _id: string;
-  groupTag: string;
+  domainId: string;
   name: string;
   description: string;
   type: string;

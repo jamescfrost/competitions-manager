@@ -11,9 +11,9 @@ import { AuthenticationService } from './services/authentication.service';
 export class AppComponent {
 
   constructor(private authService: AuthenticationService, router: Router) {
-    if (authService.isAuthenticated()) {
-      router.navigate(['dashboard']);
-    }
+    // if (!authService.isAuthenticated()) {
+    //   router.navigate(['login']);
+    // }
   }
 
 }

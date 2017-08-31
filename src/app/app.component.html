@@ -22,7 +22,7 @@
             <a [routerLink]="['/dashboard']">Dashboard</a>
           </li>
           <li *ngIf="authService.isAuthenticated()" role="presentation" [routerLinkActive]="['active']">
-            <a [routerLink]="['/competitions']">Competitions</a>
+            <a [routerLink]="['/domains']">Domains</a>
           </li>
           <li *ngIf="authService.isAuthenticated()" role="presentation" [routerLinkActive]="['active']">
             <a [routerLink]="['/logout']"><span class="glyphicon glyphicon-log-out"></span> Logout</a>

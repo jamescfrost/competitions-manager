@@ -7,14 +7,17 @@ const DomainSchema = new Schema({
     type: String,
     required: true
   },
-  creator: {
+  description: {
+    type: String
+  },
+  creatorUserId: {
     type: String,
     required: true
   }
 });
 
 DomainSchema.statics.findByUser = function(user, callback) {
-  const domainIds = user.domains;
+  const domainIds = user.domainIds;
   // var domainObjectIds = [];
   // for (domainId of domainIds) {
   //   var objectId = new mongoose.Types.ObjectId(domainId);

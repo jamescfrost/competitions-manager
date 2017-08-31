@@ -44,7 +44,7 @@ export class CompetitionComponent implements OnInit {
       this.competitionService.getCompetition(params['id'])
         .subscribe((competition: Competition) => {
           this.competition = competition;
-          this.competitionGroupTag = competition.groupTag;
+          this.competitionGroupTag = competition.domainName;
           this.competitionName = competition.name;
           this.competitionDescription = competition.description;
           this.competitionType = competition.type;
@@ -141,7 +141,7 @@ export class CompetitionComponent implements OnInit {
       } else {
         competitor = competitorWrapper.value;
       }
-      competitor.groupTag = this.competition.groupTag;
+      competitor.domainId = this.competition.domainName;
       tasks.push(this.competitorService.saveCompetitor(competitor));
     }
     Observable.forkJoin(tasks)
@@ -164,7 +164,7 @@ export class CompetitionComponent implements OnInit {
               competitorIds.push(competitorWrapper.value._id);
             }
           }
-          this.competition.groupTag = this.competitionGroupTag;
+          this.competition.domainName = this.competitionGroupTag;
           this.competition.name = this.competitionName;
           this.competition.description = this.competitionDescription;
           this.competition.type = this.competitionType;

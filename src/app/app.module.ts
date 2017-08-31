@@ -12,8 +12,11 @@ import { LogoutComponent } from './components/logout/logout.component';
 import { RegisterComponent } from './components/register/register.component'
 import { AuthGuard } from './guards/auth.guard'
 import { NotFoundComponent } from './components/not-found/not-found.component'
+import { DomainComponent } from './components/domain/domain.component'
+import { DomainsComponent } from './components/domains/domains.component'
 import { CompetitionsComponent } from './components/competitions/competitions.component'
 import { CompetitionComponent} from './components/competition/competition.component'
+import { DomainService} from './services/domain.service'
 import { CompetitionService} from './services/competition.service'
 import { CompetitorService} from './services/competitor.service'
 
@@ -38,6 +41,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     LogoutComponent,
     RegisterComponent,
     NotFoundComponent,
+    DomainComponent,
+    DomainsComponent,
     CompetitionsComponent,
     CompetitionComponent
   ],
@@ -51,6 +56,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   providers: [
     AuthGuard,
     AuthenticationService,
+    DomainService,
     CompetitionService,
     CompetitorService,
     {

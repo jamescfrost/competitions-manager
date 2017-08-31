@@ -7,7 +7,7 @@ const CompetitorSchema = new Schema({
     type: String,
     required: true
   },
-  creator: {
+  creatorUserId: {
     type: String,
     required: true
   },
@@ -17,7 +17,7 @@ const CompetitorSchema = new Schema({
   type: {
     type: String
   },
-  domain: {
+  domainId: {
     type: String,
     required: true
   }
@@ -33,12 +33,12 @@ CompetitorSchema.statics.findOneById = function(id, callback) {
   this.findOne({"_id": id}, callback);
 };
 
-CompetitorSchema.statics.findOneByDomainAndId = function(domainId, id, callback) {
-  this.findOne({"domain": domainId, "_id": id}, callback);
+CompetitorSchema.statics.findOneByDomainIdAndId = function(domainId, id, callback) {
+  this.findOne({"domainId": domainId, "_id": id}, callback);
 };
 
-CompetitorSchema.statics.findByDomain = function(domain, callback) {
-  this.find({'domain': domain}, callback);
+CompetitorSchema.statics.findByDomainId = function(domainId, callback) {
+  this.find({'domainId': domainId}, callback);
 };
 
 module.exports = mongoose.model('Competitor', CompetitorSchema);

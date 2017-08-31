@@ -21,7 +21,6 @@ router.get('/', function (req, res) {
   res.send('Competitions Manager API');
 });
 
-
 router.post('/register', function (req, res) {
   if (!req.body.name || !req.body.password) {
     res.json({success: false, msg: 'Please provide name and password.'});
@@ -57,14 +56,16 @@ router.post('/authenticate', function (req, res) {
 });
 
 
-// router.get('/:domainId/competitions', passport.authenticate('bearer', {session: false}), domainValidator, function (req, res) {
-//   Competition.find({userId: req.user._id}, function (err, competitions) {
-//     if(err) {
-//       res.send(err);
-//     }
-//     res.json(competitions);
-//   });
-// });
+router.get('/:domainId/competitions', passport.authenticate('bearer', {session: false}), domainValidator, function (req, res) {
+  const domain = req.params.domainId;
+  Competition.findByDomainId(domain, function (err, competitions) {
+    if (err) {
+      throw (err);
+    }
+    res.json(competitions);
+  });
+});
+
 //
 // router.get('/:domainId/competition/:id', passport.authenticate('bearer', {session: false}), domainValidator, function (req, res) {
 //   var id = req.params.id;

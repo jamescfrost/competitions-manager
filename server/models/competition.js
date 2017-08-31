@@ -14,17 +14,21 @@ const CompetitionSchema = new Schema({
     type: String,
     required: true
   },
-  creator: {
+  creatorUserId: {
     type: String,
     required: true
   },
-  competitors: {
+  competitorIds: {
     type: [String]
   },
-  domain: {
+  domainId: {
     type: String,
     required: true
   }
 });
+
+CompetitionSchema.statics.findByDomainId = function(domainId, callback) {
+  this.find({'domainId': domainId}, callback);
+};
 
 module.exports = mongoose.model('Competition', CompetitionSchema);

@@ -15,7 +15,7 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  domains: {
+  domainIds: {
     type: [String],
     required: true
   }
@@ -45,7 +45,7 @@ UserSchema.statics.findOneById = function(id, callback) {
   this.findOne({ "_id" : id }, callback)
 };
 
-UserSchema.statics.findOneByUserName = function(username, callback) {
+UserSchema.statics.findOneByUsername = function(username, callback) {
   this.findOne({ "username" : username }, callback)
 };
 
@@ -68,7 +68,7 @@ UserSchema.methods.comparePassword = function (passw) {
 };
 
 UserSchema.methods.hasDomainAuthority = function (domainId) {
-  return this.domains.includes(domainId);
+  return this.domainIds.includes(domainId);
 };
 
 UserSchema.methods.getDomains = function (callback) {

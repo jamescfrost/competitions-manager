@@ -9,6 +9,8 @@ import { CompetitionsComponent } from './components/competitions/competitions.co
 import { CompetitionComponent } from './components/competition/competition.component'
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthGuard } from './guards/auth.guard';
+import { DomainComponent } from './components/domain/domain.component';
+import { DomainsComponent } from './components/domains/domains.component';
 
 // Define the routes
 const appRoutes: Routes = [
@@ -27,6 +29,16 @@ const appRoutes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'domains',
+    component: DomainsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'domain/:id',
+    component: DomainComponent,
     canActivate: [AuthGuard]
   },
   {

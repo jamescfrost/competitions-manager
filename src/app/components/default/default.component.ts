@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { AuthenticationService } from '../../services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   moduleId: module.id,
@@ -7,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 
 export class DefaultComponent {
 
-  constructor() { }
-
-
+  constructor(private authService: AuthenticationService, router: Router) {
+    if (authService.isAuthenticated()) {
+      router.navigate(['/dashboard']);
+    }
+  }
 }

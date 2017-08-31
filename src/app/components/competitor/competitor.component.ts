@@ -21,7 +21,7 @@ export class CompetitionComponent implements OnInit {
     this.route.params
       .switchMap((params: Params) => this.competitionsService.getCompetition(params['id']))
       .subscribe(competition => {
-        this.competitor = competition;
+         // this.competitor = competitor;
       });
   }
 

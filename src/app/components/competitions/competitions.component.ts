@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { CompetitionService } from '../../services/competition.service'
-import { Competition } from '../../models/competition'
+import {Component, OnInit} from '@angular/core';
+import {DomainService} from '../../services/domain.service';
+import {CompetitionService} from '../../services/competition.service';
+import {CompetitorService} from '../../services/competitor.service';
+import {Domain} from '../../models/domain';
+import {Competition} from '../../models/competition';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-competitions',
@@ -8,15 +12,25 @@ import { Competition } from '../../models/competition'
 })
 export class CompetitionsComponent implements OnInit {
 
-  competitions: Competition[];
+  domains: Domain[] = [];
+  competitions: Competition[] = [];
 
-  constructor(private competitionService: CompetitionService) { }
+  constructor(private competitionService: CompetitionService, private domainService: DomainService) {
+  }
 
   ngOnInit() {
-    this.competitionService.getAllCompetitions()
-      .subscribe(competitions => {
-        this.competitions = competitions;
-      })
+    this.domainService.getAllDomains()
+      .subscribe((domains: Domain[]) => {
+        for (const domain of domains) {
+          this.competitionService.getAllCompetitions(domain._id).subscribe((competitions: Competition[]) => {
+            for (const competition of competitions) {
+              competition.domainName = domain.name;
+              this.competitions.push(competition);
+              console.log(competition);
+            }
+          });
+        }
+      });
   }
 
 }

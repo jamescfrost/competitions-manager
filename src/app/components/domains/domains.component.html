@@ -1,0 +1,9 @@
+<div>
+  <h2>Domains</h2>
+  <div class="row" *ngFor="let domain of domains">
+    <div class="col-xs-12">
+      <h4><a [routerLink]="['/', 'domain', domain._id]">{{domain.name}}</a></h4>
+      <p>{{domain.description}}</p>
+    </div>
+  </div>
+</div>
