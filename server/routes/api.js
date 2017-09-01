@@ -166,6 +166,16 @@ router.post('/:domainId/competitor/', passport.authenticate('bearer', {session: 
   }
 });
 
+router.get('/domain/:id', passport.authenticate('bearer', {session: false}), function (req, res) {
+  Domain.findById(req.params.id, function(err, domain) {
+    if (err) {
+      throw err;
+    }
+    res.json(domain);
+  });
+});
+
+
 router.get('/domains', passport.authenticate('bearer', {session: false}), function (req, res) {
   req.user.getDomains(function (err, domains) {
     if (err) {

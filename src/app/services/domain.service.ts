@@ -13,4 +13,9 @@ export class DomainService {
       .map(res => res.json());
   }
 
+  getDomain(domainId: string): Observable<Domain> {
+    return this.authHttp.get('/api/domain/' + domainId)
+      .map(res => res.json());
+  }
+
 }

@@ -26,4 +26,8 @@ DomainSchema.statics.findByUser = function(user, callback) {
   this.find({'_id': {$in: domainIds}}, callback);
 };
 
+DomainSchema.statics.findOneById = function(id, callback) {
+  this.findOne({'_id': id}, callback);
+};
+
 module.exports = mongoose.model('Domain', DomainSchema);
