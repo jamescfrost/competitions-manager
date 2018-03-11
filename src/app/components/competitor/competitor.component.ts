@@ -18,11 +18,11 @@ export class CompetitionComponent implements OnInit {
   constructor(private competitionsService: CompetitionService, private route: ActivatedRoute, private location: Location) {}
 
   ngOnInit(): void {
-    this.route.params
-      .switchMap((params: Params) => this.competitionsService.getCompetition(params['id']))
-      .subscribe(competition => {
-         // this.competitor = competitor;
-      });
+    // this.route.params
+    //   .switchMap((params: Params) => this.competitionsService.getCompetition(params['id']))
+    //   .subscribe(competition => {
+    //      // this.competitor = competitor;
+    //   });
   }
 
 /*  saveCompetition(event: Event) {

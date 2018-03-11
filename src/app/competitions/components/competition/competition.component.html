@@ -1,0 +1,59 @@
+<div>
+  <h2>Edit Competition</h2>
+  <div *ngIf="loading" class="spinner"></div>
+  <form *ngIf="!loading" name="form" (ngSubmit)="$event.preventDefault(); f.form.valid && saveCompetition();"
+        #f="ngForm" novalidate>
+    <div class="form-group">
+      <label for="_competitionDomain">Domain</label>
+      <input id="_competitionDomain" name="_competitionDomain" class="form-control" [ngModel]="competitionDomain.name"
+             readonly/>
+    </div>
+    <div class="form-group" [ngClass]="{ 'has-error': !name.valid }">
+      <label for="_competitionName">Name</label>
+      <input id="_competitionName" class="form-control" name="_competitionName" [(ngModel)]="competitionName"
+             #name="ngModel"
+             required/>
+      <div *ngIf="f.submitted && !name.valid" class="help-block">Name is required</div>
+    </div>
+    <div class="form-group" [ngClass]="{ 'has-error': !description.valid }">
+      <label for="_competitionDescription">Description</label>
+      <input id="_competitionDescription" type="_competitionDescription" class="form-control"
+             name="_competitionDescription"
+             [(ngModel)]="competitionDescription" #description="ngModel" required/>
+    </div>
+    <div class="form-group" [ngClass]="{ 'has-error': !type.valid }">
+      <label for="_competitionType">Type</label>
+      <select class="form-control" id="_competitionType" [(ngModel)]="competitionType" name="_competitionType"
+              #type="ngModel" required>
+        <option *ngFor="let t of availableTypes" [value]="t">{{t}}</option>
+      </select>
+      <div *ngIf="f.submitted && !type.valid" class="help-block">Type is required</div>
+    </div>
+    <div class="form-group" [ngClass]="{ 'has-error': !meetings.valid }">
+      <label for="_competitionMeetings">Meetings</label>
+      <input id="_competitionMeetings" type="_competitionMeetings" class="form-control"
+             name="_competitionMeetings" validateInteger
+             [(ngModel)]="competitionMeetings" #meetings="ngModel" required />
+    </div>
+    <div>
+      <label>Competitors {{competitors.length}}</label>
+      <app-competition-competitors [availableCompetitors]="availableCompetitors" [competitors]="competitors"></app-competition-competitors>
+    </div>
+    <ul>
+      <li *ngFor="let fixture of fixtures">
+        <span>{{fixture.dateScheduled | date:"dd/MM/yy HH:mm"}} {{getCompetitorName(fixture.homeCompetitorId)}} vs {{getCompetitorName(fixture.awayCompetitorId)}}</span>
+      </li>
+    </ul>
+    <div class="form-group">
+      <button [disabled]="saving || loading" [class.loader]="saving" class="btn btn-default">
+        Save</button>
+      <button [disabled]="generating || loading" class="btn btn-info"
+              (click)="generateFixtures(); $event.preventDefault();">
+        Generate fixtures
+      </button>
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
+    <div *ngIf="successMessage" class="alert alert-success">{{successMessage}}</div>
+  </form>
+
+</div>

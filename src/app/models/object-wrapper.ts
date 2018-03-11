@@ -1,10 +1,8 @@
 export class ObjectWrapper {
 
-  id: string;
   value: any;
 
-  constructor(id?: string, value?: any) {
-    this.id = id;
+  constructor(value?: any) {
     this.value = value;
   }
 

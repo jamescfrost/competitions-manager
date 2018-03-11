@@ -1,0 +1,29 @@
+<div>
+  <ul class="list-group" dnd-sortable-container [sortableData]="competitors">
+    <li *ngFor="let competitor of competitors; let i = index" class="list-group-item form-group" dnd-sortable
+        [sortableIndex]="i">
+      <div class="handle glyphicon glyphicon-th" dnd-sortable-handle></div>
+      <div class="input-group">
+        <input ng2-ng2-auto-complete
+               [source]="availableCompetitors"
+               autocomplete="off"
+               [(ngModel)]="competitor.value"
+               placeholder="Enter competitor"
+               list-formatter="name"
+               display-property-name="name"
+               min-chars="1"
+               name="_competitor[{{i}}]"
+               class="form-control"/>
+        <span class="input-group-btn">
+            <button [disabled]="loading" class="btn btn-primary"
+                    (click)="removeCompetitor(competitor); $event.preventDefault();">Remove</button>
+          </span>
+      </div>
+    </li>
+  </ul>
+  <div class="form-group">
+    <button [disabled]="loading" class="btn btn-primary" (click)="addCompetitor(); $event.preventDefault();">Add
+      competitor
+    </button>
+  </div>
+</div>

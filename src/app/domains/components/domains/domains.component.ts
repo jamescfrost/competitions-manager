@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {DomainService} from '../../services/domain.service';
-import {Domain} from '../../models/domain';
-import {Competition} from '../../models/competition';
+import {DomainService} from '../../../services/domain.service';
+import {Domain} from '../../../models/domain';
+import {Competition} from '../../../models/competition';
 import {Observable} from 'rxjs/Observable';
 
 @Component({

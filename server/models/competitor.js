@@ -33,10 +33,6 @@ CompetitorSchema.statics.findOneById = function(id, callback) {
   this.findOne({"_id": id}, callback);
 };
 
-CompetitorSchema.statics.findOneByDomainIdAndId = function(domainId, id, callback) {
-  this.findOne({"domainId": domainId, "_id": id}, callback);
-};
-
 CompetitorSchema.statics.findByDomainId = function(domainId, callback) {
   this.find({'domainId': domainId}, callback);
 };

@@ -55,54 +55,66 @@ router.post('/authenticate', function (req, res) {
   });
 });
 
-
-router.get('/:domainId/competitions', passport.authenticate('bearer', {session: false}), domainValidator, function (req, res) {
+router.get('/competitions/:domainId', passport.authenticate('bearer', {session: false}), domainValidator, function (req, res) {
   const domain = req.params.domainId;
   Competition.findByDomainId(domain, function (err, competitions) {
     if (err) {
       throw (err);
     }
-    res.json(competitions);
+    res.json({success: true, data: competitions});
   });
 });
 
-//
-// router.get('/:domainId/competition/:id', passport.authenticate('bearer', {session: false}), domainValidator, function (req, res) {
-//   var id = req.params.id;
-//   Competition.findOne({ _id : id }, function (err, competition) {
-//     if(err) {
-//       res.send(err);
-//     }
-//     res.json(competition);
-//   })
-// });
-//
-// router.put('/:domainid/competition/:id', passport.authenticate('bearer', {session: false}), domainValidator, function (req, res) {
-//   var saveCompetition = req.body;
-//   console.log(saveCompetition);
-//   Competition.findOne({ _id : saveCompetition._id }, function (err, competition) {
-//     if(err) {
-//       res.send(err);
-//     }
-//     competition.groupTag = saveCompetition.groupTag;
-//     competition.name = saveCompetition.name;
-//     competition.description = saveCompetition.description;
-//     competition.type = saveCompetition.type;
-//     competition.competitorIds = saveCompetition.competitorIds;
-//     competition.save(function(err) {
-//       if (err) {
-//         res.send(err);
-//       }
-//       res.json(competition);
-//     });
-//   })
-// });
-//
-//
+router.get('/competition/:id', passport.authenticate('bearer', {session: false}), function (req, res) {
+  var id = req.params.id;
+  const user = req.user;
+  Competition.findOneById(id, function (err, competition) {
+    if (err) {
+      throw (err);
+    }
+    if (!user.hasDomainAuthority(competition.domainId)) {
+      res.sendStatus(401);
+    } else {
+      res.json({success: true, data: competition});
+    }
+  })
+});
 
-router.get('/:domainId/competitors/', passport.authenticate('bearer', {session: false}), domainValidator, function (req, res) {
-  const domain = req.params.domainId;
-  Competitor.findByDomain(domain, function (err, competitors) {
+router.put('/competition/:id', passport.authenticate('bearer', {session: false}), function (req, res) {
+  const user = req.user;
+  const id = req.params.id;
+  const receivedCompetition = req.body;
+  Competition.findOneById(id, function (err, competition) {
+      if (err) {
+        throw (err);
+      } else if (!competition) {
+        throw ('Competition not found');
+      } else if (!user.hasDomainAuthority(competition.domainId)) {
+        res.json({success: false, data: 'Insufficient domain authority.'});
+      } else if (!receivedCompetition) {
+        res.json({success: false, data: 'Invalid competition.'});
+      } else if (id !== receivedCompetition._id) {
+        res.json({success: false, data: 'Id conflict.'});
+      } else if (competition.domainId !== receivedCompetition.domainId) {
+        res.json({success: false, data: 'Domain conflict.'});
+      } else if (!receivedCompetition.name) {
+        res.json({success: false, data: 'Name is a required field.'});
+      } else {
+        competition.applyCompetition(receivedCompetition);
+        competition.save(function (err) {
+          if (err) {
+            throw (err)
+          }
+          res.json({success: true, data: competition});
+        });
+      }
+    }
+  );
+});
+
+router.get('/competitors/:domainId', passport.authenticate('bearer', {session: false}), domainValidator, function (req, res) {
+  const domainId = req.params.domainId;
+  Competitor.findByDomainId(domainId, function (err, competitors) {
     if (err) {
       throw (err);
     }
@@ -110,64 +122,81 @@ router.get('/:domainId/competitors/', passport.authenticate('bearer', {session: 
   });
 });
 
-router.get('/:domainId/competitor/:id', passport.authenticate('bearer', {session: false}), domainValidator, function (req, res) {
+router.get('/competitor/:id', passport.authenticate('bearer', {session: false}), function (req, res) {
   const id = req.params.id;
-  const domainId = req.params.domainId;
-  Competitor.findOneByDomainAndId(domainId, id, function (err, competitor) {
+  const user = req.user;
+  Competitor.findOneById(id, function (err, competitor) {
     if (err) {
       throw (err);
     }
-    res.json(competitor);
+    if (!user.hasDomainAuthority(competitor.domainId)) {
+      res.sendStatus(401);
+    } else {
+      res.json(competitor);
+    }
   })
 });
 
-router.put('/:domainId/competitor/:id', passport.authenticate('bearer', {session: false}), domainValidator, function (req, res) {
+router.put('/competitor/:id', passport.authenticate('bearer', {session: false}), function (req, res) {
+  const user = req.user;
   const id = req.params.id;
-  const domainId = req.params.domainId;
-  Competitor.findOneByDomainAndId(domainId, id, function (err, competitor) {
-    if (err) {
-      throw (err);
-    } else if (!competitor) {
-      throw ('Competitor not found');
-    }
-    const receivedCompetitor = req.body;
-    if (!receivedCompetitor.name) {
-      res.json({success: false, msg: 'Name is a required field.'});
-    } else {
-      competitor.applyCompetitor(receivedCompetitor);
-      competitor.domain = domainId;
-      competitor.save(function (err) {
+  const receivedCompetitor = req.body;
+  if (!receivedCompetitor) {
+    res.json({success: false, msg: 'Invalid competitor.'});
+  } else if (id !== receivedCompetitor.id) {
+    res.json({success: false, msg: 'Id conflict.'});
+  } else {
+    Competitor.findOneByAndId(id, function (err, competitor) {
         if (err) {
-          throw (err)
+          throw (err);
+        } else if (!competitor) {
+          throw ('Competitor not found');
+        } else if (competitor.domainId !== receivedCompetitor.domainId) {
+          res.json({success: false, msg: 'Domain conflict.'});
+        } else if (!user.hasDomainAuthority(receivedCompetitor.domainId)) {
+          res.json({success: false, msg: 'Insufficient domain authority.'});
+        } else if (!receivedCompetitor.name) {
+          res.json({success: false, msg: 'Name is a required field.'});
+        } else {
+          competitor.applyCompetitor(receivedCompetitor);
+          competitor.domain = domainId;
+          competitor.save(function (err) {
+            if (err) {
+              throw (err)
+            }
+            res.json({success: true, competitor: competitor});
+          });
         }
-        res.json({success: true, competitor: competitor});
-      });
-    }
-  });
+      }
+    );
+  }
 });
 
-router.post('/:domainId/competitor/', passport.authenticate('bearer', {session: false}), domainValidator, function (req, res) {
-  const domainId = req.params.domainId;
-  const userId = req.user._id;
+router.post('/competitor/', passport.authenticate('bearer', {session: false}), function (req, res) {
+  const user = req.user;
   const receivedCompetitor = req.body;
-  if (!receivedCompetitor.name) {
-    res.json({success: false, msg: 'Name is a required field.'});
+  if (!receivedCompetitor) {
+    res.sendStatus(400).send('Invalid competitor.');
+  } else if (!user.hasDomainAuthority(receivedCompetitor.domainId)) {
+    res.sendStatus(401).send('Insufficient domain authority.');
+  } else if (!receivedCompetitor.name) {
+    res.sendStatus(422).send('Name is a required field.');
   } else {
     const competitor = new Competitor();
     competitor.applyCompetitor(receivedCompetitor);
-    competitor.creator = userId;
-    competitor.domain = domainId;
+    competitor.creatorUserId = user._id;
+    competitor.domainId = receivedCompetitor.domainId;
     competitor.save(function (err) {
       if (err) {
         throw (err)
       }
-      res.json({success: true, competitor: competitor});
+      res.json(competitor);
     });
   }
 });
 
 router.get('/domain/:id', passport.authenticate('bearer', {session: false}), function (req, res) {
-  Domain.findById(req.params.id, function(err, domain) {
+  Domain.findById(req.params.id, function (err, domain) {
     if (err) {
       throw err;
     }
@@ -185,9 +214,50 @@ router.get('/domains', passport.authenticate('bearer', {session: false}), functi
   });
 });
 
+router.get('/fixtures', function (req, res) {
+  var competitors = [
+    'James',
+    'Rich',
+    'Dan',
+    'Stephen',
+    'LT',
+  ];
+  var count = competitors.length;
+  if (count % 2 == 1) {
+    competitors.push(null);
+    count++;
+  }
+  var home = competitors.splice(0, count / 2);
+  var away = competitors.splice(0, count / 2);
+  var fixtureSets = [];
+  var fixtureSetCount = count - 1;
+  var fixtureCount = count / 2;
+  var flip = true;
+  for (var fixtureSet = 0; fixtureSet < fixtureSetCount*2; fixtureSet++) {
+    var fixtures = [];
+    for (var i=0; i < fixtureCount; i++) {
+      if (flip)
+        fixtures.push(home[i] + " vs " + away[i]);
+      else
+        fixtures.push(away[i] + " vs " + home[i]);
+    }
+    fixtureSets.push(fixtures);
+    var tempAway = away[0];
+    var tempHome = home[fixtureCount-1];
+    for (var i=0; i<fixtureCount-1; i++) {
+      away[i] = away[i+1];
+      if (i>0)
+        home[i+1] = home[i];
+    }
+    home[1] = tempAway;
+    away[fixtureCount-1] = tempHome;
+    flip = !flip;
+  }
+  res.json(fixtureSets);
+});
+
 router.get('/*', function (req, res) {
   res.sendStatus(404);
 });
 
 module.exports = router;
-

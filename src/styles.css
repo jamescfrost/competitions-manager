@@ -30,3 +30,30 @@ footer {
   padding-top:20px;
   clear: both;
 }
+
+.handle {
+  float:left;
+  margin: 5px 10px 0 0;
+  opacity: 0.5;
+}
+
+.loader:after {
+  content: '';
+  box-sizing: border-box;
+  position: relative;
+  height: 1em;
+  width: 1em;
+  margin-left: 3px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  border-top-color: #333;
+  -webkit-animation: spinner .6s linear infinite;
+  animation: spinner .6s linear infinite;
+  display: inline-block;
+  top: 2px;
+}
+
+.loader:after .dark {
+  border: 2px solid #ccc;
+  border-top-color: #333;
+}

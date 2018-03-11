@@ -1,0 +1,20 @@
+<div *ngIf="loading" class="spinner"></div>
+<div *ngIf="!loading">
+  <h2>{{domain.name}}</h2>
+  <h3>Competitions</h3>
+  <div *ngIf="competitions">
+    <div *ngFor="let competition of competitions" class="row">
+      <div class="col-xs-12">
+        <h4><a [routerLink]="['/', 'competition', competition._id]">{{competition.name}}</a></h4>
+      </div>
+    </div>
+  </div>
+  <h3>Competitors</h3>
+  <div *ngIf="competitors">
+    <div *ngFor="let competitor of competitors" class="row">
+      <div class="col-xs-12">
+        <h4><a [routerLink]="['/', 'competitor', competitor._id]">{{competitor.name}}</a></h4>
+      </div>
+    </div>
+  </div>
+</div>

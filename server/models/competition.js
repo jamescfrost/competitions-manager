@@ -27,8 +27,19 @@ const CompetitionSchema = new Schema({
   }
 });
 
+CompetitionSchema.methods.applyCompetition = function (competition) {
+  this.name = competition.name;
+  this.description = competition.description;
+  this.type = competition.type;
+  this.competitorIds = competition.competitorIds;
+};
+
 CompetitionSchema.statics.findByDomainId = function(domainId, callback) {
   this.find({'domainId': domainId}, callback);
+};
+
+CompetitionSchema.statics.findOneById = function(id, callback) {
+  this.findOne({"_id": id}, callback);
 };
 
 module.exports = mongoose.model('Competition', CompetitionSchema);

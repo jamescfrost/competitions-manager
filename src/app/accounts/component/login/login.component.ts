@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from '../../services/authentication.service';
+import { AuthenticationService } from '../../../services/authentication.service';
+import {Domain} from '../../../models/domain';
+import {DomainService} from '../../../services/domain.service';
+import {GlobalDataService} from '../../../services/globals.service';
 
 @Component({
   moduleId: module.id,
@@ -15,7 +18,9 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService) { }
+    private authenticationService: AuthenticationService,
+    private domainService: DomainService,
+    private globalDataService: GlobalDataService) { }
 
   ngOnInit() {
     // reset login status
@@ -29,6 +34,10 @@ export class LoginComponent implements OnInit {
         if (result === true) {
           // login successful
           this.router.navigate(['/dashboard']);
+          this.domainService.getAllDomains().subscribe(
+              function (domains: Domain[]) {
+                this.globalDataService.shareObj['domains'] = domains;
+          });
         } else {
           // login failed
           this.error = 'Username or password is incorrect';

@@ -9,13 +9,8 @@ export class CompetitorService {
 
   constructor(private authHttp: AuthHttp) {}
 
-  getAllCompetitors(): Observable<Competitor[]> {
-    return this.authHttp.get('/api/competitors')
-      .map(res => res.json());
-  }
-
-  getAllCompetitorsByGroupTag(groupTag: string): Observable<Competitor[]> {
-    return this.authHttp.get('/api/competitors/' + groupTag)
+  getAllCompetitors(domainId: String): Observable<Competitor[]> {
+    return this.authHttp.get('/api/competitors/' + domainId)
       .map(res => res.json());
   }
 
